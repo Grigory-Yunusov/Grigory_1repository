@@ -2,22 +2,28 @@ from handler import *
 
 
 def parser(user_input):
+    action = user_input.split()[0].lower()
+    data = user_input.split()[1:]
+    try:
+        handler = COMMANDS[action]
+    except KeyError:
+        handler = unknown_command
+        if not action or action == '.':
+            handler = good_bye
+    return handler, data
 
-    commands = user_input.split(' ')
-    commands[0] # add, change_name, change_phone, phone, show, show all, delete
 
-    if commands[0] == 'hello':
-        return hello()
-    if commands[0] == 'add':
-        return save_user(commands[1], commands[2])
-    if commands[0] == 'change':
-        return update_user(commands[1], commands[2])
-    if commands[0] == 'phone':
-        return get_telephone_user(commands[1], commands[2])
-    if commands[0] == 'show all':
-        return get_all_users()
-
+COMMANDS = {
+    'hello': hello,
+    'add': save_user,
+    'change': update_user,
+    'phone': get_telephone_user,
+    'show_all': get_all_users,
+    'good_bye': good_bye,
+    'exit': good_bye,
+    'close': good_bye
+}
 
 
 if __name__ == '__main__':
-    parser.parser("user")
+    parser("user")

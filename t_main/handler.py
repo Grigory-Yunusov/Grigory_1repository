@@ -17,48 +17,54 @@ def error_handler(func):
     return inner
 
 
+
+
+
+
+def hello(_):
+    return "How can I help you?"
+
+def good_bye(_):
+    return 'Good bye!'
+
+def unknown_command(_):
+    return """this command is not valid!
+            Enter correct commands please!
+    
+"""
+
 @error_handler
-def create_table():
-    global my_dict
-    my_dict = {}
-    return my_dict
-
-
-
-@error_handler
-def hello():
-    print("How can I help you?")
-
-
-
-@error_handler
-def save_user(name, telephone):
+def save_user(data):
+    name, telephone, *_ = data
     my_dict[name.title()] = telephone
+    return f'User with name {name} and phone {telephone} was added!'
 
 
 
 
 @error_handler
-def get_all_users():
-    my_dict.items()
-    print(my_dict)
+def get_all_users(_):
+    result = []
+    for name, telephone in my_dict.items():
+        result.append(f'{name} - {telephone}')
+    return result
 
 
 
 @error_handler
-def get_telephone_user(name):
-    for kay in my_dict:
-        if kay == name:
-            print(my_dict.get(name))
+def get_telephone_user(data):
+    return f'The phone number is: {my_dict[data[0]]}'
 
 
 
 @error_handler
-def update_user(name, telephone):
+def update_user(data):
+    name, telephone, *_ = data
     for kay in my_dict.values():
         if kay == name:
             my_dict.pop(name)
         my_dict[name] = telephone
+        return f'The phone number for name {name} was changed!'
 
 
 
